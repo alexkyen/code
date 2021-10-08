@@ -13,9 +13,9 @@ class TimestampSimulator extends NetworkSimulator {
     super.tick();
 
     // at the 5th timestep try faking an early spend
-    if (this.time === 5) {
-      network.broadcast(evilNode.pid, fakeEarlySpend);
-    }
+    // if (this.time === 5) {
+    //   network.broadcast(evilNode.pid, fakeEarlySpend);
+    // }
   }
 }
 // ****** Test this out using a simulated network ****** //
@@ -51,7 +51,7 @@ for (let i = 0; i < numNodes; i++) {
     ),
   );
   // Connect everyone to everyone
-  network.connectPeer(nodes[i], (numConnections = 3));
+  network.connectPeer(nodes[i], i);
 }
 
 // Attempt double spend
@@ -76,9 +76,12 @@ const generateCustomTx = (to, amount, timestamp, node) => {
   tx.sigs.push(EthCrypto.sign(node.wallet.privateKey, getTxHash(tx)));
   return tx;
 };
-// TODO
 // create two transactions with the same amount, but with different timestamps
+const spend = generateCustomTx(victims[0].wallet.address, 100, 10, evilNode);
+const fakeEarlySpend = generateCustomTx(victims[1].wallet.address, 100, 0, evilNode);
 // broadcast both transactions to the network at the same time
+network.broadcast(evilNode.pid, spend);
+network.broadcast(evilNode.pid, fakeEarlySpend);
 
 // Now run the network until an invalid spend is detected.
 // We will also detect if the two victim nodes, for a short time, both believe they have been sent money by our evil node. That's our double spend!

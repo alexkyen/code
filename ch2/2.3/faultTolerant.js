@@ -32,16 +32,25 @@ class FaultTolerant extends Node {
 
   // what the node does when it receives a transaction
   onReceive(tx) {
-    // TODO
-    // if we're already seen (and processed the transaction), jut return since there's nothing to do
+    // if we're already seen (and processed the transaction), just return since there's nothing to do
+    if (this.seen.includes(tx.contents)) return;
     // get the signature from the transaction
+    const sigs = this.addressesFromSigs(tx);
     // return and do not process the transaction if the first signee is not tx sender
+    if (this.network.time >= this.timeout(tx.contents.timestamp, sigs.size)) return;
     // take note that we've seen the transaction
+    this.seen.push(tx.contents);
     // check that each signee is actually a peer in the network
+    const finalTimeout = this.timeout(tx.contents.timestamp, this.network.agents.length);
     // add to pending ( we'll apply this transaction once we hit finalTimeout)
+    if (!this.pendingTxs[finalTimeout]) this.pendingTxs[finalTimeout] = [];
+    this.pendingTxs[finalTimeout].push(tx);
     // choice rule: if the node has two transactions with same sender, nonce, and timestamp then apply the one with lower sig first
+    this.pendingTxs[finalTimeout].sort((a, b) => a.sigs[0] - b.sigs[0]);
     // add this node's signature to the transaction
+    tx.sigs.push(EthCrypto.sign(this.wallet.privateKey, getTxHash(tx)));
     // broadcast the transaction to the rest of the network so that another node can sign it
+    this.network.broadcast(this.pid, tx);
   }
 
   // do stuff

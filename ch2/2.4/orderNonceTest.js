@@ -34,7 +34,7 @@ for (let i = 0; i < numNodes; i++) {
       authority.wallet.address,
     ),
   );
-  network.connectPeer(nodes[i], (numConnections = 2));
+  network.connectPeer(nodes[i], i);
 }
 nodes.push(authority);
 network.connectPeer(authority, (numConnections = 0));

@@ -27,7 +27,7 @@ for (let i = 0; i < numNodes; i++) {
       (delta = 5),
     ),
   );
-  network.connectPeer(nodes[i], (numConnections = 2));
+  network.connectPeer(nodes[i], i);
 }
 
 // Create a quick test

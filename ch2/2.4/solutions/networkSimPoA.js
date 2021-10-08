@@ -1,5 +1,5 @@
 const EthCrypto = require('eth-crypto');
-const NetworkSimulator = require('../networkSim');
+const NetworkSimulator = require('../../networkSim');
 
 class NetworkSimPoA extends NetworkSimulator {
   constructor(latency, packetLoss) {

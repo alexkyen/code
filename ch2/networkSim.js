@@ -26,14 +26,16 @@ class NetworkSimulator {
     this.peers[newPeer.pid] = [];
     for (const a of shuffledAgents.slice(0, numConnections)) {
       this.peers[newPeer.pid].push(a);
+      console.log(`${newPeer.pid} is connected to ${a.pid}`);
       this.peers[a.pid].push(newPeer);
+      console.log(`${a.pid} is connected to ${newPeer.pid}`);
     }
   }
 
   // broadcast messages from a node to the rest of the network
   broadcast(sender, message) {
-    for (const pid of this.peers[sender]) {
-      this.broadcastTo(sender, pid, message);
+    for (const receiver of this.peers[sender]) {
+      this.broadcastTo(sender, receiver, message);
     }
   }
 

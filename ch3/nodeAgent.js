@@ -5,7 +5,7 @@ function getTxHash (tx) {
 }
 
 class Node {
-  constructor (wallet, genesis, network) {
+  constructor(wallet, genesis, network) {
     // Blockchain identity
     this.wallet = wallet
     // P2P Node identity -- used for connecting to peers
@@ -18,7 +18,7 @@ class Node {
     this.nonce = 0
   }
 
-  onReceive (tx) {
+  onReceive(tx) {
     if (this.transactions.includes(tx)) {
       return
     }
@@ -28,7 +28,7 @@ class Node {
     this.applyInvalidNonceTxs(tx.contents.from)
   }
 
-  applyInvalidNonceTxs (address) {
+  applyInvalidNonceTxs(address) {
     const targetNonce = this.state[address].nonce
     if (address in this.invalidNonceTxs && targetNonce in this.invalidNonceTxs[address]) {
       this.applyTransaction(this.invalidNonceTxs[address][targetNonce])
@@ -37,9 +37,9 @@ class Node {
     }
   }
 
-  tick () {}
+  tick() {}
 
-  generateTx (to, amount) {
+  generateTx(to, amount) {
     const unsignedTx = {
       type: 'send',
       amount: amount,
@@ -55,7 +55,7 @@ class Node {
     return tx
   }
 
-  applyTransaction (tx) {
+  applyTransaction(tx) {
     // Check the from address matches the signature
     const signer = EthCrypto.recover(tx.sig, getTxHash(tx.contents))
     if (signer !== tx.contents.from) {

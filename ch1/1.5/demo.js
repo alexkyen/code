@@ -1,6 +1,6 @@
 const EthCrypto = require('eth-crypto');
-const Client = require('./Client.js');
-const Paypal = require('./Paypal.js');
+const Client = require('./client.js');
+const Paypal = require('./paypal.js');
 
 // Paypal Network Demo
 console.log('//////////////////////////////////////////');
@@ -78,21 +78,31 @@ console.log(
   "\nLet's imagine that some time has passed... Paypal is doing well and has lots of users. Naturally, Paypal decides to implement fees. Users are already using Paypal and don't want to switch, so the fee isn't THAT big of a deal. Let's see how it affects their balances over time",
 );
 
-// BONUS TODO (not directly related to understanding cryptoeconomic mechanisms, but a good programming exercise non the less)
+// BONUS
 // Death by 1000 transaction fees
 function financialAttrition(...users) {
   // simulate 1000 transactions
-  // TODO
-  // pick a random value between 1 and 10
-  // TODO
-  // choose two users at random, but excluding Paypal
-  // TODO
-  // create a transaction from one random user to another
-  // TODO
-  // process the transaction
-  // TODO
-  // print Paypal's balance and/or the full state to the console every 100 iterations so we can see the progress
-  // TODO
+  const txArray = [];
+  for (let i = 0; i < 1000; i++) {
+    // pick a random value between 1 and 10
+    let a = 0;
+    let b = 0;
+    while (a === b) {
+      a = Math.floor(Math.random() * 10);
+      b = Math.floor(Math.random() * 10);
+    }
+    // choose two users at random, but excluding Paypal
+    const userA = users[a];
+    const userB = users[b];
+    // create a transaction from one random user to another
+    const tx = userA.generateTx(userB.wallet.address, 5, 'send');
+    // process the transaction
+    paypal.processTx(tx);
+    // print Paypal's balance and/or the full state to the console every 100 iterations so we can see the progress
+    if (((i + 1) % 100 === 0)) {
+      console.log(paypal.state);
+    }
+  }
 }
 
 financialAttrition(

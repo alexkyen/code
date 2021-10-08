@@ -1,6 +1,6 @@
 const EthCrypto = require('eth-crypto');
 const _ = require('lodash');
-const NetworkSimulator = require('../networkSim');
+const NetworkSimulator = require('../../networkSim');
 const { Node, getTxHash } = require('../../nodeAgent');
 
 // Authority extends Node and provides functionality needed to receive, order, and broadcast transactions

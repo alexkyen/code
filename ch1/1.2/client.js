@@ -5,6 +5,7 @@ class Client {
   // Initializes a public/private key pair for the user
   constructor() {
     this.wallet = EthCrypto.createIdentity();
+    this.sign = this.sign.bind(this);
   }
 
   // Creates a keccak256/SHA3 hash of some data
@@ -28,15 +29,25 @@ class Client {
   // Buys tokens from Paypal
   buy(amount) {
     // Let the user know that they just exchanged off-network goods for network tokens
-    console.log('AN INTERESTING MESSAGE');
+    console.log(`CONGRATS YOU JUST SOLD YOUR KIDNEY FOR ${amount} YOUR MOM WOULD BE SO PROUD!`);
   }
 
   // Generates new transactions
   generateTx(to, amount, type) {
-    // TODO:
     // create an unsigned transaction
+    const unsignedTx = {
+      type,
+      amount,
+      from: this.wallet.address,
+      to,
+    };
     // create a signature of the transaction
+    const signature = this.sign(unsignedTx);
     // return a Javascript object with the unsigned transaction and transaction signature
+    return {
+      contents: unsignedTx,
+      sig: signature,
+    };
   }
 }
 

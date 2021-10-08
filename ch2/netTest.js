@@ -53,12 +53,12 @@ const testAgents = [
 // initialize the network
 const network = new NetworkSimulator((latency = 5), (packetLoss = 0));
 // connect the testing agents to the network
-for (const a of testAgents) {
-  network.connectPeer(a, 1);
+for (const [i, a] of testAgents.entries()) {
+  network.connectPeer(a, i);
 }
 // test a broadcast to make sure the agents are connected
-network.broadcast('karl', 'testing!');
-network.broadcast('aparna', 'testing!');
+network.broadcast('karl', 'testing from karl!');
+network.broadcast('aparna', 'testing from aparna!');
 // log the state of the network test to the console
 console.log(network);
 // run the network

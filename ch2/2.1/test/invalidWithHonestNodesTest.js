@@ -1,7 +1,7 @@
 const EthCrypto = require('eth-crypto');
 const NetworkSimulator = require('../../networkSim');
 const { Node, getTxHash } = require('../../nodeAgent');
-const Spender = require('../solutions/spenderNode');
+const Spender = require('../spenderNode');
 
 // ////////////////////////////////////////////////////////
 // ****** Test this out using a simulated network ****** //
